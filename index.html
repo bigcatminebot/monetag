@@ -59,7 +59,7 @@
 
   <script>
     function getRandomReward() {
-      return Math.floor(Math.random() * (25 - 10 + 1)) + 10;
+      return Math.floor(Math.random() * (15 - 10 + 1)) + 10;
     }
 
     function playRewardedAd() {
@@ -71,7 +71,7 @@
           const reward = getRandomReward();
           rewardDisplay.textContent = `🎉 Kamu mendapatkan Rp${reward}!\nSilahkan screenshot halaman ini untuk penarikan reward.`;
         }).catch(() => {
-          rewardDisplay.textContent = "❌ Gagal menampilkan iklan. Coba lagi nanti.";
+          rewardDisplay.textContent = "❌ Gagal menampilkan iklan. Silahkan matikan pengaturan AdBlock terlebih dahulu.";
         });
       } else {
         rewardDisplay.textContent = "❗ Iklan belum siap. Silakan refresh halaman.";
