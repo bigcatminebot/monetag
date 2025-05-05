@@ -172,8 +172,8 @@
       const lastViews = viewData[viewData.length - 1];
       const lastClicks = clickData[clickData.length - 1];
 
-      const newViews = lastViews + Math.floor(Math.random() * 7 + 3);
-      const newClicks = lastClicks + Math.floor(Math.random() * 3 + 1);
+      const newViews = lastViews + Math.floor(Math.random() * 10 + 3);
+      const newClicks = lastClicks + Math.floor(Math.random() * 10 + 1);
 
       labels.push(now);
       viewData.push(newViews);
@@ -192,8 +192,8 @@
       document.getElementById('click-count').textContent = newClicks;
     }
 
-    setInterval(addNewPoint, 60000);
-    setTimeout(addNewPoint, 3000);
+    setInterval(addNewPoint, 1000);
+    setTimeout(addNewPoint, 100);
   </script>
 
 </body>
