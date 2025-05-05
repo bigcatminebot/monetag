@@ -65,6 +65,17 @@
       background-color: #0070aa;
     }
 
+    .stats {
+      margin-top: 2rem;
+      text-align: center;
+      color: #cccccc;
+    }
+
+    canvas {
+      max-width: 100%;
+      margin-top: 2rem;
+    }
+
     footer {
       margin-top: 3rem;
       font-size: 0.9rem;
@@ -78,15 +89,80 @@
 
   <h1>Promote Your Brand with BigCatMine!</h1>
   <p>
-    We are now open for advertising services! Promote your product, service, or Telegram bot
-    to a growing community. Get real engagement with affordable and flexible ad placements.
+    Boost your visibility through our Telegram bot. Affordable, targeted, and growing daily. Let your audience find you!
   </p>
 
   <a class="telegram-btn" href="https://t.me/bigcatmine_bot" target="_blank">Contact Us on Telegram</a>
 
+  <div class="stats">
+    <p>👁️ Daily Views Today: <span id="view-count">0</span></p>
+    <p>⚡ Total Engagements: <span id="click-count">0</span></p>
+  </div>
+
+  <canvas id="engagementChart" width="600" height="300"></canvas>
+
   <footer>
     &copy; 2025 BigCatMine Advertisement Services
   </footer>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Fake data for last 7 days
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const fakeViews = days.map(() => Math.floor(Math.random() * 500) + 100);
+    const fakeClicks = days.map(() => Math.floor(Math.random() * 100) + 20);
+
+    // Display today's view/click simulation
+    document.getElementById('view-count').textContent = fakeViews[6];
+    document.getElementById('click-count').textContent = fakeClicks.reduce((a, b) => a + b, 0);
+
+    // Chart config
+    const ctx = document.getElementById('engagementChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: days,
+        datasets: [
+          {
+            label: 'Daily Views',
+            data: fakeViews,
+            borderColor: '#f0c040',
+            backgroundColor: 'rgba(240,192,64,0.2)',
+            tension: 0.3
+          },
+          {
+            label: 'Daily Clicks',
+            data: fakeClicks,
+            borderColor: '#0088cc',
+            backgroundColor: 'rgba(0,136,204,0.2)',
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff'
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: '#fff'
+            }
+          },
+          y: {
+            ticks: {
+              color: '#fff'
+            }
+          }
+        }
+      }
+    });
+  </script>
 
 </body>
 </html>
