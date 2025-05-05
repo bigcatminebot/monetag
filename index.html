@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Promote with BigCatMine</title>
+  <title>Promosi di BigCatMine Bot</title>
   <style>
     :root {
       --primary-color: #f0c040;
-      --bg-color: #1a1a1a;
+      --bg-color: #121212;
       --accent-color: #0088cc;
       --font-color: #ffffff;
     }
@@ -21,44 +21,43 @@
     body {
       background-color: var(--bg-color);
       color: var(--font-color);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 2rem;
+      text-align: center;
     }
 
     img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 1.5rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      width: 100%;
+      max-width: 600px;
+      border-radius: 1.2rem;
       margin-bottom: 2rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.6);
     }
 
     h1 {
-      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-size: clamp(2rem, 5vw, 3rem);
       color: var(--primary-color);
       margin-bottom: 1rem;
-      text-align: center;
     }
 
     p {
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      color: #dddddd;
+      font-size: 1.1rem;
+      color: #ccc;
       max-width: 700px;
-      text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     a.telegram-btn {
       background-color: var(--accent-color);
       color: white;
-      padding: 0.8rem 1.8rem;
+      padding: 0.9rem 1.8rem;
       font-size: 1.1rem;
       border-radius: 8px;
       text-decoration: none;
-      transition: background-color 0.3s ease;
+      transition: background 0.3s ease;
     }
 
     a.telegram-btn:hover {
@@ -67,13 +66,13 @@
 
     .stats {
       margin-top: 2rem;
-      text-align: center;
-      color: #cccccc;
+      font-size: 1rem;
+      color: #bbbbbb;
     }
 
     canvas {
       max-width: 100%;
-      background: #222;
+      background-color: #1e1e1e;
       border-radius: 10px;
       margin-top: 2rem;
       padding: 10px;
@@ -82,30 +81,28 @@
     footer {
       margin-top: 3rem;
       font-size: 0.9rem;
-      color: #888888;
+      color: #888;
     }
   </style>
 </head>
 <body>
 
-  <img src="advert.png" alt="Advertise with BigCatMine" />
+  <img src="advert.png" alt="Iklan BigCatMine" />
 
-  <h1>Promote Your Brand with BigCatMine!</h1>
-  <p>
-    Tampilkan iklanmu ke ribuan pengguna aktif di Telegram dengan harga terjangkau dan hasil optimal. Terhubung langsung dengan audience potensial setiap hari!
-  </p>
+  <h1>Pasang Iklan di Bot Telegram</h1>
+  <p>Jangkau ribuan user aktif setiap hari lewat BigCatMine Bot. Biaya murah, hasil maksimal. Layanan 24 jam nonstop.</p>
 
   <a class="telegram-btn" href="https://t.me/bigcatmine_admin" target="_blank">Hubungi Kami</a>
 
   <div class="stats">
     <p>👁️ Views Hari Ini: <span id="view-count">0</span></p>
-    <p>⚡ Total Klik: <span id="click-count">0</span></p>
+    <p>⚡ Klik Hari Ini: <span id="click-count">0</span></p>
   </div>
 
   <canvas id="engagementChart" width="600" height="300"></canvas>
 
   <footer>
-    &copy; 2025 BigCatMine Advertisement Services
+    &copy; 2025 BigCatMine - Layanan Iklan Telegram
   </footer>
 
   <!-- Chart.js CDN -->
@@ -114,10 +111,10 @@
     const ctx = document.getElementById('engagementChart').getContext('2d');
 
     let labels = [new Date().toLocaleTimeString()];
-    let viewData = [Math.floor(Math.random() * 10) + 10];
-    let clickData = [Math.floor(viewData[0] * 0.3)];
+    let viewData = [Math.floor(Math.random() * 10) + 100];
+    let clickData = [Math.floor(viewData[0] * 0.4)];
 
-    // Set awal stats
+    // Set awal counter
     document.getElementById('view-count').textContent = viewData[0];
     document.getElementById('click-count').textContent = clickData[0];
 
@@ -127,17 +124,17 @@
         labels: labels,
         datasets: [
           {
-            label: 'Views per Minute',
+            label: 'Views',
             data: viewData,
-            borderColor: '#00cc99',
-            backgroundColor: 'rgba(0, 204, 153, 0.2)',
+            borderColor: '#00ff99',
+            backgroundColor: 'rgba(0, 255, 153, 0.1)',
             tension: 0.3
           },
           {
-            label: 'Clicks per Minute',
+            label: 'Clicks',
             data: clickData,
-            borderColor: '#f08080',
-            backgroundColor: 'rgba(240, 128, 128, 0.2)',
+            borderColor: '#ff6666',
+            backgroundColor: 'rgba(255, 102, 102, 0.1)',
             tension: 0.3
           }
         ]
@@ -145,55 +142,43 @@
       options: {
         plugins: {
           legend: {
-            labels: {
-              color: '#fff'
-            }
+            labels: { color: '#fff' }
           }
         },
         scales: {
-          x: {
-            ticks: {
-              color: '#fff'
-            }
-          },
-          y: {
-            beginAtZero: true,
-            ticks: {
-              color: '#fff'
-            }
-          }
+          x: { ticks: { color: '#fff' }},
+          y: { ticks: { color: '#fff' }, beginAtZero: true }
         }
       }
     });
 
-    // Tambahkan data baru setiap menit (ganti 60000 ke 10000 untuk demo cepat)
+    // Tambahkan data baru setiap 10 detik
     function addNewPoint() {
       const now = new Date().toLocaleTimeString();
       const lastViews = viewData[viewData.length - 1];
       const lastClicks = clickData[clickData.length - 1];
 
-      const newViews = lastViews + Math.floor(Math.random() * 10 + 3);
-      const newClicks = lastClicks + Math.floor(Math.random() * 10 + 1);
+      const newViews = lastViews + Math.floor(Math.random() * 20 + 20); // tambah 20–39
+      const newClicks = lastClicks + Math.floor(Math.random() * 10 + 10); // tambah 10–19
 
       labels.push(now);
       viewData.push(newViews);
       clickData.push(newClicks);
 
-      // Batasi ke 10 titik saja
       if (labels.length > 10) {
         labels.shift();
         viewData.shift();
         clickData.shift();
       }
 
-      // Update UI
-      chart.update();
       document.getElementById('view-count').textContent = newViews;
       document.getElementById('click-count').textContent = newClicks;
+
+      chart.update();
     }
 
-    setInterval(addNewPoint, 1000);
-    setTimeout(addNewPoint, 100);
+    setInterval(addNewPoint, 10000); // tiap 10 detik
+    setTimeout(addNewPoint, 3000);
   </script>
 
 </body>
