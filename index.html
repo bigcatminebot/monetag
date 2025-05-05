@@ -2,15 +2,19 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Reward dari Iklan</title>
+  <title>Reward Iklan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="monetag" content="42aaebda75c154520ffb9b6037f89a20">
+  <script src="//whephiwums.com/sdk.js" data-zone="9293871" data-sdk="show_9293871"></script>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background: #101820;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -19,79 +23,60 @@
       height: 100vh;
       text-align: center;
     }
-
     h1 {
-      color: #00f7ff;
+      font-size: 24px;
+      font-weight: 600;
+      color: #00d4ff;
       margin-bottom: 20px;
     }
-
     #rewardDisplay {
-      margin: 20px 0;
-      font-size: 20px;
+      font-size: 18px;
+      margin-bottom: 20px;
       color: #00ff99;
     }
-
     button {
-      background: #00f7ff;
-      border: none;
-      color: #000;
-      font-weight: bold;
       padding: 14px 28px;
       font-size: 16px;
+      font-weight: bold;
+      background: linear-gradient(to right, #1e90ff, #00d4ff);
+      color: white;
+      border: none;
       border-radius: 10px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 4px 12px rgba(0, 170, 255, 0.4);
     }
-
     button:hover {
-      background: #00c0cc;
+      background: linear-gradient(to right, #0094dd, #00c3e6);
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body>
-
   <h1>🎁 Tonton Iklan & Dapatkan Reward</h1>
-  <div id="rewardDisplay">Klik tombol di bawah untuk mulai!</div>
-  <button onclick="playRewardedAd()">Tonton Iklan Sekarang</button>
-
-  <!-- Monetag SDK -->
-  <script src='//whephiwums.com/sdk.js' data-zone='9293871' data-sdk='show_9293871'></script>
+  <div id="rewardDisplay">Klik tombol di bawah untuk memulai</div>
+  <button onclick="showAd()">Tonton Iklan Sekarang</button>
 
   <script>
     function getRandomReward() {
-      return Math.floor(Math.random() * (15 - 10 + 1)) + 10;
+      return Math.floor(Math.random() * (15 - 10 + 1)) + 5;
     }
 
-    function playRewardedAd() {
-      const rewardDisplay = document.getElementById('rewardDisplay');
+    function showAd() {
+      const display = document.getElementById('rewardDisplay');
+      display.textContent = "⏳ Memuat iklan...";
 
       if (typeof show_9293871 === 'function') {
-        rewardDisplay.textContent = "⏳ Memuat iklan...";
-        show_9293871().then(() => {
+        show_9293871('pop').then(() => {
           const reward = getRandomReward();
-          rewardDisplay.textContent = `🎉 Kamu mendapatkan Rp${reward}!\nSilahkan screenshot halaman ini untuk penarikan reward.`;
+          display.textContent = `🎉 Kamu mendapatkan Rp${reward}!\nSilakan screenshot halaman ini untuk penarikan.`;
         }).catch(() => {
-          rewardDisplay.textContent = "❌ Gagal menampilkan iklan. Silahkan matikan pengaturan AdBlock terlebih dahulu.";
+          display.textContent = "❌ Gagal menampilkan iklan. Silahkan matikan AdBlock terlebih dahulu!.";
         });
       } else {
-        rewardDisplay.textContent = "❗ Iklan belum siap. Silakan refresh halaman.";
+        display.textContent = "❗ Iklan belum siap. Silakan refresh halaman.";
       }
     }
-
-    // Optional: auto tampilkan iklan biasa
-    if (typeof show_9293871 === 'function') {
-      show_9293871({
-        type: 'inApp',
-        inAppSettings: {
-          frequency: 2,
-          capping: 0.1,
-          interval: 30,
-          timeout: 5,
-          everyPage: false
-        }
-      });
-    }
   </script>
-
 </body>
 </html>
