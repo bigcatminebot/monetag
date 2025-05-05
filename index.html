@@ -3,142 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advertise with BigCatMine</title>
+  <title>Live Engagement Growth</title>
   <style>
-    :root {
-      --primary-color: #f0c040;
-      --bg-color: #1a1a1a;
-      --accent-color: #0088cc;
-      --font-color: #ffffff;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      background-color: var(--bg-color);
-      color: var(--font-color);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      text-align: center;
       padding: 2rem;
     }
 
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 1.5rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-      margin-bottom: 2rem;
-    }
-
     h1 {
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      color: var(--primary-color);
+      color: #f0c040;
       margin-bottom: 1rem;
-      text-align: center;
-    }
-
-    p {
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      color: #dddddd;
-      max-width: 700px;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    a.telegram-btn {
-      background-color: var(--accent-color);
-      color: white;
-      padding: 0.8rem 1.8rem;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-    }
-
-    a.telegram-btn:hover {
-      background-color: #0070aa;
-    }
-
-    .stats {
-      margin-top: 2rem;
-      text-align: center;
-      color: #cccccc;
     }
 
     canvas {
       max-width: 100%;
-      margin-top: 2rem;
-    }
-
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #888888;
+      background: #222;
+      border-radius: 10px;
+      padding: 10px;
     }
   </style>
 </head>
 <body>
 
-  <img src="advert.png" alt="Advertise with BigCatMine" />
+  <h1>Live Engagement Growth</h1>
+  <p>Grafik views yang terus meningkat setiap menit</p>
+  <canvas id="growthChart" width="600" height="300"></canvas>
 
-  <h1>Promote Your Brand with BigCatMine!</h1>
-  <p>
-    Boost your visibility through our Telegram bot. Affordable, targeted, and growing daily. Let your audience find you!
-  </p>
-
-  <a class="telegram-btn" href="https://t.me/bigcatmine_bot" target="_blank">Contact Us on Telegram</a>
-
-  <div class="stats">
-    <p>👁️ Daily Views Today: <span id="view-count">0</span></p>
-    <p>⚡ Total Engagements: <span id="click-count">0</span></p>
-  </div>
-
-  <canvas id="engagementChart" width="600" height="300"></canvas>
-
-  <footer>
-    &copy; 2025 BigCatMine Advertisement Services
-  </footer>
-
-  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // Fake data for last 7 days
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    const fakeViews = days.map(() => Math.floor(Math.random() * 500) + 100);
-    const fakeClicks = days.map(() => Math.floor(Math.random() * 100) + 20);
+    const ctx = document.getElementById('growthChart').getContext('2d');
 
-    // Display today's view/click simulation
-    document.getElementById('view-count').textContent = fakeViews[6];
-    document.getElementById('click-count').textContent = fakeClicks.reduce((a, b) => a + b, 0);
+    // Setup awal: waktu dan nilai pertama
+    let labels = [new Date().toLocaleTimeString()];
+    let data = [Math.floor(Math.random() * 10) + 10];
 
-    // Chart config
-    const ctx = document.getElementById('engagementChart').getContext('2d');
-    new Chart(ctx, {
+    const chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: days,
-        datasets: [
-          {
-            label: 'Daily Views',
-            data: fakeViews,
-            borderColor: '#f0c040',
-            backgroundColor: 'rgba(240,192,64,0.2)',
-            tension: 0.3
-          },
-          {
-            label: 'Daily Clicks',
-            data: fakeClicks,
-            borderColor: '#0088cc',
-            backgroundColor: 'rgba(0,136,204,0.2)',
-            tension: 0.3
-          }
-        ]
+        labels: labels,
+        datasets: [{
+          label: 'Views per Minute',
+          data: data,
+          borderColor: '#00cc99',
+          backgroundColor: 'rgba(0, 204, 153, 0.2)',
+          tension: 0.3
+        }]
       },
       options: {
         plugins: {
@@ -157,11 +69,36 @@
           y: {
             ticks: {
               color: '#fff'
-            }
+            },
+            beginAtZero: true
           }
         }
       }
     });
+
+    // Fungsi untuk menambahkan data naik setiap menit
+    function addNewPoint() {
+      const lastValue = data[data.length - 1];
+      const newValue = lastValue + Math.floor(Math.random() * 5 + 3); // naik 3–7 poin
+      const currentTime = new Date().toLocaleTimeString();
+
+      labels.push(currentTime);
+      data.push(newValue);
+
+      // Tampilkan hanya 10 data terakhir
+      if (labels.length > 10) {
+        labels.shift();
+        data.shift();
+      }
+
+      chart.update();
+    }
+
+    // Tambahkan data setiap 60 detik (60000 ms)
+    setInterval(addNewPoint, 60000);
+
+    // Untuk demo: tambahkan juga 1x saat halaman dibuka
+    setTimeout(addNewPoint, 3000);
   </script>
 
 </body>
