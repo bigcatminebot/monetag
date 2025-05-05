@@ -5,35 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Advertise with BigCatMine</title>
   <style>
-    body {
-      background-color: #1e1e1e;
-      color: #f0c040;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
+    :root {
+      --primary-color: #f0c040;
+      --bg-color: #1a1a1a;
+      --accent-color: #0088cc;
+      --font-color: #ffffff;
     }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--font-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
     img {
       max-width: 100%;
       height: auto;
-      border-radius: 20px;
-      margin-bottom: 30px;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      margin-bottom: 2rem;
     }
+
     h1 {
-      font-size: 2em;
-      margin-bottom: 10px;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      text-align: center;
     }
+
+    p {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      color: #dddddd;
+      max-width: 700px;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
     a.telegram-btn {
-      display: inline-block;
-      background-color: #0088cc;
+      background-color: var(--accent-color);
       color: white;
-      padding: 12px 24px;
-      text-decoration: none;
+      padding: 0.8rem 1.8rem;
+      font-size: 1.1rem;
       border-radius: 8px;
-      font-size: 1.1em;
-      margin-top: 20px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
     }
+
     a.telegram-btn:hover {
-      background-color: #0075b0;
+      background-color: #0070aa;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #888888;
     }
   </style>
 </head>
@@ -41,10 +76,17 @@
 
   <img src="advert.png" alt="Advertise with BigCatMine" />
 
-  <h1>Open Advertisement Services</h1>
-  <p>Reach out to our bot now for pricing and placement</p>
+  <h1>Promote Your Brand with BigCatMine!</h1>
+  <p>
+    We are now open for advertising services! Promote your product, service, or Telegram bot
+    to a growing community. Get real engagement with affordable and flexible ad placements.
+  </p>
 
-  <a class="telegram-btn" href="https://t.me/bigcatmine_bot" target="_blank">Contact via Telegram</a>
+  <a class="telegram-btn" href="https://t.me/bigcatmine_bot" target="_blank">Contact Us on Telegram</a>
+
+  <footer>
+    &copy; 2025 BigCatMine Advertisement Services
+  </footer>
 
 </body>
 </html>
