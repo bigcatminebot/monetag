@@ -1,185 +1,296 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Promosi di BigCatMine Bot</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Dashboard Panel</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
-    :root {
-      --primary-color: #f0c040;
-      --bg-color: #121212;
-      --accent-color: #0088cc;
-      --font-color: #ffffff;
-    }
-
-    * {
-      box-sizing: border-box;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
+      background: #f9f9f9;
+      color: #333;
     }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--font-color);
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
+    header {
+      background: #0077cc;
+      color: #fff;
+      padding: 15px;
       text-align: center;
     }
-
-    img {
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, button {
       width: 100%;
-      max-width: 600px;
-      border-radius: 1.2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-    }
-
-    h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      color: var(--primary-color);
-      margin-bottom: 1rem;
-    }
-
-    p {
-      font-size: 1.1rem;
-      color: #ccc;
-      max-width: 700px;
-      margin-bottom: 1.5rem;
-    }
-
-    a.telegram-btn {
-      background-color: var(--accent-color);
-      color: white;
-      padding: 0.9rem 1.8rem;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background 0.3s ease;
-    }
-
-    a.telegram-btn:hover {
-      background-color: #0070aa;
-    }
-
-    .stats {
-      margin-top: 2rem;
-      font-size: 1rem;
-      color: #bbbbbb;
-    }
-
-    canvas {
-      max-width: 100%;
-      background-color: #1e1e1e;
-      border-radius: 10px;
-      margin-top: 2rem;
       padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
-
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #888;
+    button {
+      background: #0077cc;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #0077cc;
+      color: white;
+    }
+    .section {
+      background: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 600px) {
+      input, select, button {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
+  <header>
+    <h2>Trading Dashboard Panel</h2>
+  </header>
+  <div class="container">
+    <div class="section">
+      <label>Saldo Awal (USDC):</label>
+      <input type="number" id="initialSaldo" value="1250.00" step="0.01" onchange="updateSaldo()">
+      <p id="currentSaldo">Saldo Akhir: 1250.00 USDC</p>
+      <p id="winrate">Winrate: 0%</p>
+    </div>
 
-  <img src="advert.png" alt="Iklan BigCatMine" />
+    <div class="section">
+      <label>Pair Option:</label>
+      <select id="pair">
+        <option value="XAUUSDc">XAUUSDc</option>
+        <option value="BTCUSDc">BTCUSDc</option>
+      </select>
 
-  <h1>Pasang Iklan di Bot Telegram</h1>
-  <p>Jangkau ribuan user aktif setiap hari lewat BigCatMine Bot. Biaya murah, hasil maksimal. Layanan 24 jam nonstop.</p>
+      <label>Lot per Layer:</label>
+      <input type="number" id="lot" step="0.01">
 
-  <a class="telegram-btn" href="https://t.me/bigcatmine_admin" target="_blank">Hubungi Kami</a>
+      <label>Jumlah Layer:</label>
+      <input type="number" id="layerCount" min="1">
 
-  <div class="stats">
-    <p>👁️ Views Hari Ini: <span id="view-count">0</span></p>
-    <p>⚡ Klik Hari Ini: <span id="click-count">0</span></p>
+      <label>Posisi Option:</label>
+      <select id="position">
+        <option value="BUY">BUY</option>
+        <option value="SELL">SELL</option>
+      </select>
+
+      <label>Alasan Entry:</label>
+      <input type="text" id="reason">
+
+      <label>Posisi Entry (Harga):</label>
+      <input type="number" id="entryPrice" step="0.0001">
+
+      <button onclick="openBatchPosition()">Open Batch Position</button>
+    </div>
+
+    <div class="section">
+      <h3>Open Trades</h3>
+      <button onclick="exportToExcel()" style="margin-bottom: 10px;">Export to Excel</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Pair</th>
+            <th>Layers</th>
+            <th>Lot Total</th>
+            <th>Posisi</th>
+            <th>Entry</th>
+            <th>Open Time</th>
+            <th>All Close</th>
+            <th>Close Time</th>
+            <th>Pips</th>
+            <th>USDC</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="tradeTable"></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Trading Log History</h3>
+      <ul id="logHistory"></ul>
+    </div>
   </div>
 
-  <canvas id="engagementChart" width="600" height="300"></canvas>
-
-  <footer>
-    &copy; 2025 BigCatMine - Layanan Iklan Telegram
-  </footer>
-
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const ctx = document.getElementById('engagementChart').getContext('2d');
+    let batches = JSON.parse(localStorage.getItem('batches')) || [];
+    let saldo = parseFloat(localStorage.getItem('saldo')) || 1250.00;
 
-    let labels = [new Date().toLocaleTimeString()];
-    let viewData = [Math.floor(Math.random() * 10) + 100];
-    let clickData = [Math.floor(viewData[0] * 0.4)];
-
-    // Set awal counter
-    document.getElementById('view-count').textContent = viewData[0];
-    document.getElementById('click-count').textContent = clickData[0];
-
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Views',
-            data: viewData,
-            borderColor: '#00ff99',
-            backgroundColor: 'rgba(0, 255, 153, 0.1)',
-            tension: 0.3
-          },
-          {
-            label: 'Clicks',
-            data: clickData,
-            borderColor: '#ff6666',
-            backgroundColor: 'rgba(255, 102, 102, 0.1)',
-            tension: 0.3
-          }
-        ]
-      },
-      options: {
-        plugins: {
-          legend: {
-            labels: { color: '#fff' }
-          }
-        },
-        scales: {
-          x: { ticks: { color: '#fff' }},
-          y: { ticks: { color: '#fff' }, beginAtZero: true }
-        }
-      }
-    });
-
-    // Tambahkan data baru setiap 10 detik
-    function addNewPoint() {
-      const now = new Date().toLocaleTimeString();
-      const lastViews = viewData[viewData.length - 1];
-      const lastClicks = clickData[clickData.length - 1];
-
-      const newViews = lastViews + Math.floor(Math.random() * 20 + 20); // tambah 20–39
-      const newClicks = lastClicks + Math.floor(Math.random() * 10 + 10); // tambah 10–19
-
-      labels.push(now);
-      viewData.push(newViews);
-      clickData.push(newClicks);
-
-      if (labels.length > 10) {
-        labels.shift();
-        viewData.shift();
-        clickData.shift();
-      }
-
-      document.getElementById('view-count').textContent = newViews;
-      document.getElementById('click-count').textContent = newClicks;
-
-      chart.update();
+    function updateSaldo() {
+      saldo = parseFloat(document.getElementById('initialSaldo').value);
+      saveToLocal();
+      updateDisplay();
     }
 
-    setInterval(addNewPoint, 10000); // tiap 10 detik
-    setTimeout(addNewPoint, 3000);
-  </script>
+    function updateDisplay() {
+      document.getElementById('currentSaldo').textContent = `Saldo Akhir: ${saldo.toFixed(2)} USDC`;
+      updateWinrate();
+    }
 
+    function updateWinrate() {
+      const closed = batches.filter(b => b.closeTime);
+      const wins = closed.filter(b => b.usdc > 0);
+      const rate = closed.length ? (wins.length / closed.length * 100).toFixed(2) : 0;
+      document.getElementById('winrate').textContent = `Winrate: ${rate}%`;
+    }
+
+    function saveToLocal() {
+      localStorage.setItem('batches', JSON.stringify(batches));
+      localStorage.setItem('saldo', saldo);
+    }
+
+    function logHistory(message) {
+      const logList = document.getElementById('logHistory');
+      const item = document.createElement('li');
+      item.textContent = `${new Date().toLocaleString()}: ${message}`;
+      logList.prepend(item);
+    }
+
+    function openBatchPosition() {
+      const count = parseInt(document.getElementById('layerCount').value);
+      const lot = parseFloat(document.getElementById('lot').value);
+      const entry = parseFloat(document.getElementById('entryPrice').value);
+      const now = new Date().toLocaleString();
+      const batch = {
+        id: Date.now(),
+        pair: document.getElementById('pair').value,
+        positionType: document.getElementById('position').value,
+        reason: document.getElementById('reason').value,
+        positions: Array.from({ length: count }, (_, i) => ({
+          layer: i + 1,
+          lot: lot,
+          entryPrice: entry,
+          openTime: now
+        })),
+        closePrice: null,
+        closeTime: null,
+        pips: null,
+        usdc: null
+      };
+      batches.push(batch);
+      saveToLocal();
+      logHistory(`Open ${batch.positions.length} ${batch.pair} (${batch.positionType}) @ ${entry}`);
+      renderTrades();
+    }
+
+    function calculatePips(entry, close) {
+      return Math.round(Math.abs(close - entry) * 10);
+    }
+
+    function closeBatch(id) {
+      const price = parseFloat(prompt(`Masukkan harga All Close:`));
+      if (!price || isNaN(price)) return;
+      const batch = batches.find(b => b.id === id);
+      const remaining = batch.positions;
+      const toClose = remaining.splice(0);
+      let totalPips = 0;
+      let totalUsdc = 0;
+
+      toClose.forEach(pos => {
+        const pips = calculatePips(pos.entryPrice, price);
+        const isProfit = (batch.positionType === 'BUY' && price > pos.entryPrice) || (batch.positionType === 'SELL' && price < pos.entryPrice);
+        const profit = (isProfit ? 1 : -1) * pips * pos.lot;
+        totalPips += (batch.positionType === 'SELL' ? -pips : pips);
+        totalUsdc += profit;
+        saldo += profit;
+      });
+
+      batch.closePrice = price;
+      batch.closeTime = new Date().toLocaleString();
+      batch.pips = totalPips;
+      batch.usdc = totalUsdc;
+
+      saveToLocal();
+      logHistory(`Close ${batch.positions.length} ${batch.pair} (${batch.positionType}) @ ${price} → ${totalPips} pips = ${totalUsdc.toFixed(2)} USDC`);
+      renderTrades();
+    }
+
+    function deleteBatch(id) {
+      if (!confirm('Yakin ingin menghapus posisi ini?')) return;
+      batches = batches.filter(b => b.id !== id);
+      saveToLocal();
+      logHistory(`Hapus posisi ID ${id}`);
+      renderTrades();
+    }
+
+    function renderTrades() {
+      const tbody = document.getElementById('tradeTable');
+      tbody.innerHTML = '';
+      batches.forEach(b => {
+        const totalLot = b.positions.length * (b.positions[0]?.lot || 0);
+        const entry = b.positions[0]?.entryPrice?.toFixed(4) || '-';
+        const openTime = b.positions[0]?.openTime || '-';
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${b.pair}</td>
+          <td>${b.positions.length}</td>
+          <td>${totalLot.toFixed(2)}</td>
+          <td>${b.positionType}</td>
+          <td>${entry}</td>
+          <td>${openTime}</td>
+          <td>${b.closeTime ? '-' : `<button onclick="closeBatch(${b.id})">All</button>`}</td>
+          <td>${b.closeTime ?? '-'}</td>
+          <td>${b.pips ?? '-'}</td>
+          <td>${b.usdc !== null ? b.usdc.toFixed(2) : '-'}</td>
+          <td>${b.closeTime ? '-' : `<button onclick="deleteBatch(${b.id})">Delete</button>`}</td>
+        `;
+        tbody.appendChild(row);
+      });
+      updateDisplay();
+    }
+
+    function exportToExcel() {
+      const data = batches.map(b => ({
+        Pair: b.pair,
+        Layers: b.positions.length,
+        TotalLot: (b.positions.length * (b.positions[0]?.lot || 0)).toFixed(2),
+        Position: b.positionType,
+        EntryPrice: b.positions[0]?.entryPrice?.toFixed(4) || '-',
+        EntryTime: b.positions[0]?.openTime || '-',
+        ClosePrice: b.closePrice !== null ? b.closePrice.toFixed(4) : '-',
+        CloseTime: b.closeTime ?? '-',
+        Pips: b.pips ?? '-',
+        ResultUSDC: b.usdc !== null ? b.usdc.toFixed(2) : '-',
+        Reason: b.reason
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Trade History");
+      XLSX.writeFile(workbook, "trade_history.xlsx");
+    }
+
+    updateDisplay();
+    renderTrades();
+  </script>
 </body>
 </html>
